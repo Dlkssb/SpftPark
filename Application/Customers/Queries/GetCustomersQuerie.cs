@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Interfaces;
+using Domain.Entities;
 using MediatR;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -16,14 +17,17 @@ namespace Application.Customers.Queries
         {
             
            private readonly IMongoDatabase _database;
+            private readonly ISoftParkDbContext<Customer> _softParkDbContext;
 
-            public GetCustomersHandler(IMongoClient database)
+            public GetCustomersHandler(IMongoClient database,ISoftParkDbContext<Customer> softParkDbContext)
             {
                 _database=database.GetDatabase(Constants.DatabaseName);
+                _softParkDbContext=softParkDbContext;
             }
             
             public async Task<IList<Customer>> Handle(GetCustomersQuerie request, CancellationToken cancellationToken)
             {
+                
                 var collection = _database.GetCollection<Customer>(Constants.CategoriesCollectionName);
                 var customers= await collection.Find(new BsonDocument()).ToListAsync(cancellationToken);
                 try

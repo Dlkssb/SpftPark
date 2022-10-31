@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Interfaces;
 using Domain.Entities;
-using Infrastructure;
 using MediatR;
 using MongoDB.Driver;
 using SharpCompress.Common;
@@ -29,15 +28,16 @@ namespace Application.Customers.Commands
         public class Handler : IRequestHandler<CreateCustomerCommand,Guid>
         {
             private readonly IMongoDatabase _context;
+            private readonly ISoftParkDbContext<Customer> _softParkDbContext;
 
-            public Handler(IMongoClient context)
+            public Handler(IMongoClient context, ISoftParkDbContext<Customer> softParkDbContext)
             {
                 _context = context.GetDatabase(Constants.GetDatabaseName());
-               
+                _softParkDbContext = softParkDbContext;
             }
             public async Task<Guid> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
             {
-                var collection = _context.GetCollection<Customer>(Constants.CategoriesCollectionName);
+                
 
                 try
                 {
@@ -49,9 +49,13 @@ namespace Application.Customers.Commands
                         request.address
                         );
 
-                    await collection.InsertOneAsync(entitiy, null, cancellationToken);
+                    var id=_softParkDbContext.InsertOneAsync(entitiy);
+
+                  /*  var collection = _context.GetCollection<Customer>(Constants.CategoriesCollectionName);
+
+                    await collection.InsertOneAsync(entitiy, null, cancellationToken);*/
                     
-                    return entitiy.Id;
+                    return id.Result;
                 }
                 catch (Exception ex) {
                     throw new Exception(ex.Message);
