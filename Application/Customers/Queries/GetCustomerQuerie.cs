@@ -14,35 +14,27 @@ namespace Application.Customers.Queries
     public class GetCustomerQuerie : IRequest<Customer>
     {
         public Guid? CustomerId { get; set; }
-        public string? FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string PhoneNumber { get; set; }
-
-        public Address address { get; set; }    
 
         public class GetCustomerHandler : IRequestHandler<GetCustomerQuerie, Customer>
         {
            
             private readonly IMongoDatabase _database;
-            public GetCustomerHandler(IMongoClient database)
+            private readonly IMapper _mapper;
+            public GetCustomerHandler(IMongoClient database, IMapper mapper)
             {
                 _database=database.GetDatabase(Constants.GetDatabaseName());
+                _mapper=mapper;
             }
 
-            public Task<Customer> Handle(GetCustomerQuerie request, CancellationToken cancellationToken)
+            public async Task<Customer> Handle(GetCustomerQuerie request, CancellationToken cancellationToken)
             {
                 if (request.CustomerId.HasValue)
                 {
-                    var customer = new Customer(
-                       request.CustomerId.Value,
-                       request.FirstName,
-                       request.LastName,
-                       request.PhoneNumber,
-                       request.address
-                        );
-                    return customer;
+                    var collection = _database.GetCollection<Customer>(Constants.CategoriesCollectionName);
+                    var filter = Builders<Customer>.Filter.Eq(doc => doc.Id, request.CustomerId);
+
+                    var customer = await collection.Find(filter).ToListAsync(cancellationToken);
+                    return _mapper.Map<Customer>(customer.First());
                 }
                 else
                 {
