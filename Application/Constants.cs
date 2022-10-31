@@ -19,8 +19,9 @@ namespace Application
             return name;
         }
 
-        public const string CategoriesCollectionName = "Customers";
-        public const string DiscountsCollectionName = "Houses";
-        
+        public const string CustomerCollectionName = "Customers";
+        public const string HousesCollectionName = "Houses";
+        public const string AddressesCollectionName = "Addresses";
+
     }
 }

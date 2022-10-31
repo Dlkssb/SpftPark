@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 namespace Application.Interfaces
     
 {
-    public interface ISoftParkDbContext<T> : IMongoDatabase where T : class
+    public interface ISoftParkDbContext<T> where T : class
     {
 
      public   IQueryable<T> AsQueryable();
