@@ -23,39 +23,14 @@ namespace Application.Interfaces
             Expression<Func<T, bool>> filterExpression,
             Expression<Func<T, TProjected>> projectionExpression);
 
-        T FindOne(Expression<Func<T, bool>> filterExpression);
-
-       public Task<T> FindOneAsync(Expression<Func<T, bool>> filterExpression);
-
-        T FindById(Guid id);
 
         Task<T> FindByIdAsync(Guid id);
 
-        void InsertOne(T document);
-
         Task<Guid> InsertOneAsync(T document);
-
-        void InsertMany(ICollection<T> documents);
-
-        Task InsertManyAsync(ICollection<T> documents);
-
-        void ReplaceOne(T document);
 
         Task<Guid> ReplaceOneAsync(T document);
 
-        void DeleteOne(Expression<Func<T, bool>> filterExpression);
-
-        Task DeleteOneAsync(Expression<Func<T, bool>> filterExpression);
-
-        void DeleteById(Guid id);
-
         Task DeleteByIdAsync(Guid id);
-
-        void DeleteMany(Expression<Func<T, bool>> filterExpression);
-
-        Task DeleteManyAsync(Expression<Func<T, bool>> filterExpression);
-
-
 
         Task<Guid> SaveChangesAsync(CancellationToken cancellationToken);
     }
