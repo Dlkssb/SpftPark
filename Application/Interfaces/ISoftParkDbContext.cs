@@ -1,37 +1,22 @@
 ﻿using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MongoDB.Driver;
-using System.Linq.Expressions;
+
 
 namespace Application.Interfaces
     
 {
-    public interface ISoftParkDbContext<T> where T : class
+    public interface ISoftParkDbContext<T> where T : EntityBase
     {
 
-     public   IQueryable<T> AsQueryable();
+     public  Task<IList<T>> GetAll(CancellationToken cancellationToken);
 
-      public  IEnumerable<T> FilterBy(
-            Expression<Func<T, bool>> filterExpression);
+      public  Task<T> FindByIdAsync(Guid id,CancellationToken cancellationToken);
 
-       public IEnumerable<TProjected> FilterBy<TProjected>(
-            Expression<Func<T, bool>> filterExpression,
-            Expression<Func<T, TProjected>> projectionExpression);
+       public  Task<Guid> InsertOneAsync(T document, CancellationToken cancellationToken);
 
+      public  Task<Guid> ReplaceOneAsync(T document,CancellationToken cancellationToken);
 
-        Task<T> FindByIdAsync(Guid id);
+      public  Task DeleteByIdAsync(Guid id,CancellationToken cancellationToken);
 
-        Task<Guid> InsertOneAsync(T document);
-
-        Task<Guid> ReplaceOneAsync(T document);
-
-        Task DeleteByIdAsync(Guid id);
-
-        Task<Guid> SaveChangesAsync(CancellationToken cancellationToken);
+        
     }
 }

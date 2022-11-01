@@ -1,13 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using MediatR;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Customers.Commands
 {
@@ -39,7 +33,7 @@ namespace Application.Customers.Commands
                 var filter= Builders<Customer>.Filter.Eq(doc => doc.Id, Id);
                 var customer=collection.Find(filter);*/
 
-                var customer = await _softParkDbContext.FindByIdAsync(request.CustomerId);
+                var customer = await _softParkDbContext.FindByIdAsync(request.CustomerId,cancellationToken);
                 if(customer!=null)
                 {
                     var NewCustomer = new Customer(
@@ -51,6 +45,7 @@ namespace Application.Customers.Commands
                         );
 
                     var resulte=_softParkDbContext.ReplaceOneAsync(NewCustomer);
+                    
                    // await collection.ReplaceOneAsync(filter, NewCustomer, new UpdateOptions { IsUpsert=true} , cancellationToken);
                     
                     return resulte.Result;

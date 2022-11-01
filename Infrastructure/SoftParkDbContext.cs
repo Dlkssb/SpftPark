@@ -1,64 +1,60 @@
 ﻿using Application;
 using Application.Interfaces;
+using Domain.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+
 
 
 namespace Infrastructure
 {
-    public class SoftParkDbContext<T> : ISoftParkDbContext<T> where T : class
+    public class SoftParkDbContext<T> : ISoftParkDbContext<T> where T : EntityBase
     {
         private readonly IMongoDatabase _database;
+        private readonly IMongoCollection<T>  _Collection;
 
         public SoftParkDbContext(IMongoClient database)
         {
             _database = database.GetDatabase(Constants.GetDatabaseName());
+            _Collection = _database.GetCollection<T>("");
         }
 
-        public IQueryable<T> AsQueryable()
+        public Task DeleteByIdAsync(Guid id,CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            FilterDefinition<T> filter = Builders<T>.Filter.Eq(enitiy => enitiy.Id, id);
+            var customer =  _Collection.Find(filter).FirstOrDefaultAsync(cancellationToken);
+            _Collection.DeleteOneAsync(filter);
+            return Task.CompletedTask;
         }
 
-        public Task DeleteByIdAsync(Guid id)
+        public async Task<T> FindByIdAsync(Guid id,CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var filter = Builders<T>.Filter.Eq(doc => doc.Id, id);
+            var customer = await _Collection.FindAsync<T>(filter);
+
+            return customer.First();
         }
 
-        public IEnumerable<T> FilterBy(Expression<Func<T, bool>> filterExpression)
+        public async Task<IList<T>> GetAll(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var listEntity= await _Collection.Find(new BsonDocument()).ToListAsync(cancellationToken);
+            return listEntity;
         }
 
-        public IEnumerable<TProjected> FilterBy<TProjected>(Expression<Func<T, bool>> filterExpression, Expression<Func<T, TProjected>> projectionExpression)
+        public async Task<Guid> InsertOneAsync(T document,CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _Collection.InsertOneAsync(document,null,cancellationToken);
+            return document.Id;
         }
 
-        public Task<T> FindByIdAsync(Guid id)
+        public async Task<Guid> ReplaceOneAsync(T document,CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            FilterDefinition<T> filter = Builders<T>.Filter.Eq(doc => doc.Id, document.Id);
+           var r= await _Collection.ReplaceOneAsync(filter, document, new UpdateOptions { IsUpsert = true }, cancellationToken);
+            return document.Id;
         }
 
-        public Task<Guid> InsertOneAsync(T document)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<Guid> ReplaceOneAsync(T document)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Guid> SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

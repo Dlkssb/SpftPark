@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using Application.Interfaces;
 using Domain.Entities;
 using MediatR;
 using MongoDB.Driver;
-using SharpCompress.Common;
 
 namespace Application.Customers.Commands
 {
@@ -49,13 +43,13 @@ namespace Application.Customers.Commands
                         request.address
                         );
 
-                    var id=_softParkDbContext.InsertOneAsync(entitiy);
+                    var id=_softParkDbContext.InsertOneAsync(entitiy,cancellationToken);
 
                   /*  var collection = _context.GetCollection<Customer>(Constants.CategoriesCollectionName);
 
                     await collection.InsertOneAsync(entitiy, null, cancellationToken);*/
                     
-                    return id.Result;
+                    return request.Id;
                 }
                 catch (Exception ex) {
                     throw new Exception(ex.Message);
