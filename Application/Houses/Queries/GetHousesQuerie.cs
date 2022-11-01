@@ -14,16 +14,17 @@ namespace Application.Houses.Queries
 
         public class GetHousesHandler : IRequestHandler<GetHousesQuerie, IList<House>>
         {
-            private readonly ISoftParkDbContext<Customer> _softParkDbContext;
+            private readonly ISoftParkDbContext<House> _softParkDbContext;
 
-            public GetHousesHandler(ISoftParkDbContext<Customer> softParkDbContext)
+            public GetHousesHandler(ISoftParkDbContext<House> softParkDbContext)
             {
                 _softParkDbContext = softParkDbContext;
             }
 
-            public Task<IList<House>> Handle(GetHousesQuerie request, CancellationToken cancellationToken)
+            public async Task<IList<House>> Handle(GetHousesQuerie request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+                var houses=_softParkDbContext.GetAll(cancellationToken);
+                return houses.Result;
             }
         }
     }

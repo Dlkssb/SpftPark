@@ -11,20 +11,30 @@ namespace Application.Houses.Commands
 {
     public class DeleteHouseCommand :IRequest
     {
-        public Guid? Id { get; private set; }
+        public Guid Id { get;  set; }
 
         public class DeleteHouseHandler : IRequestHandler<DeleteHouseCommand>
         {
-            private readonly ISoftParkDbContext<Customer> _softParkDbContext;
+            private readonly ISoftParkDbContext<House> _softParkDbContext;
 
-            public DeleteHouseHandler(ISoftParkDbContext<Customer> softParkDbContext)
+            public DeleteHouseHandler(ISoftParkDbContext<House> softParkDbContext)
             {
                 _softParkDbContext = softParkDbContext;
             }
 
-            public Task<Unit> Handle(DeleteHouseCommand request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(DeleteHouseCommand request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+                var house =   _softParkDbContext.DeleteByIdAsync(request.Id,cancellationToken);
+
+                if (house != null)
+                {
+                    
+                    return Unit.Value;
+                }
+                else
+                {
+                    throw new Exception("Customer not found");
+                }
             }
         }
     }

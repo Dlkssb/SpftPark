@@ -20,14 +20,37 @@ namespace Application.Houses.Commands
 
         public class CreateHouseHandler : IRequestHandler<CreateHouseCommand, Guid>
         {
-            private readonly ISoftParkDbContext<Customer> _softParkDbContext;
-            public CreateHouseHandler(ISoftParkDbContext<Customer> softParkDbContext)
+            private readonly ISoftParkDbContext<House> _softParkDbContext;
+            public CreateHouseHandler(ISoftParkDbContext<House> softParkDbContext)
             {
                 _softParkDbContext = softParkDbContext;
             }
 
-            public Task<Guid> Handle(CreateHouseCommand request, CancellationToken cancellationToken)
+            public async Task<Guid> Handle(CreateHouseCommand request, CancellationToken cancellationToken)
             {
+
+                try
+                {
+                    var entitiy = new House(
+                        request.Id,
+                        request.TypeOfOffer,
+                        request.address,
+                        request.ImageUrl
+
+                        );
+
+                    var id = await _softParkDbContext.InsertOneAsync(entitiy, cancellationToken);
+
+                    return id;
+                }
+
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+
+                }
+
+
                 throw new NotImplementedException();
             }
         }
