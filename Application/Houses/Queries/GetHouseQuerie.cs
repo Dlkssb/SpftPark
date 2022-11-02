@@ -1,11 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application.Houses.Queries
 {
@@ -22,7 +18,7 @@ namespace Application.Houses.Queries
                 _softParkDbContext = softParkDbContext;
             }
 
-            public async async Task<House> Handle(GetHouseQuerie request, CancellationToken cancellationToken)
+            public async Task<House> Handle(GetHouseQuerie request, CancellationToken cancellationToken)
             {
                 if (request.Id.HasValue)
 

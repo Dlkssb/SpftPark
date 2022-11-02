@@ -23,8 +23,8 @@ namespace Application.Houses.Queries
 
             public async Task<IList<House>> Handle(GetHousesQuerie request, CancellationToken cancellationToken)
             {
-                var houses=_softParkDbContext.GetAll(cancellationToken);
-                return houses.Result;
+                var houses=await _softParkDbContext.GetAll(cancellationToken);
+                return houses;
             }
         }
     }
