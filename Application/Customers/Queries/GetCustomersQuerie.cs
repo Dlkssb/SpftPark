@@ -19,9 +19,9 @@ namespace Application.Customers.Queries
             
            private readonly IMongoDatabase _database;
             private readonly IMapper _imapper;
-            private readonly ISoftParkDbContext<Customer> _softParkDbContext;
+            private readonly IRepositoryBase<Customer> _softParkDbContext;
 
-            public GetCustomersHandler(IMongoClient database,ISoftParkDbContext<Customer> softParkDbContext,IMapper imapper)
+            public GetCustomersHandler(IMongoClient database,IRepositoryBase<Customer> softParkDbContext,IMapper imapper)
             {
                 _database=database.GetDatabase(Constants.DatabaseName);
                 _softParkDbContext=softParkDbContext;

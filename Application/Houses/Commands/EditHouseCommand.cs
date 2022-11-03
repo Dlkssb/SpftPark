@@ -20,20 +20,20 @@ namespace Application.Houses.Commands
 
         public class EditHouseHandler : IRequestHandler<EditHouseCommand, Guid>
         {
-            private readonly ISoftParkDbContext<House> _softParkDbContext;
-            public EditHouseHandler(ISoftParkDbContext<House> softParkDbContext)
+            private readonly IHouseRepository _IhouseRepository;
+            public EditHouseHandler(IHouseRepository IhouseRepository)
             {
-                _softParkDbContext = softParkDbContext;
+                _IhouseRepository = IhouseRepository;
             }
 
             public async Task<Guid> Handle(EditHouseCommand request, CancellationToken cancellationToken)
             {
-                var house =  _softParkDbContext.FindByIdAsync(request.Id, cancellationToken);
+                var house = _IhouseRepository.FindByIdAsync(request.Id, cancellationToken);
 
                 if (house != null)
                 {
                     var newHouse = new House(
-                        request.Id,
+                        
                         request.TypeOfOffer,
                         request.address,
                         request.ImageUri

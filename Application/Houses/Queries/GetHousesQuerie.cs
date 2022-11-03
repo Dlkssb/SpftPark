@@ -14,16 +14,16 @@ namespace Application.Houses.Queries
 
         public class GetHousesHandler : IRequestHandler<GetHousesQuerie, IList<House>>
         {
-            private readonly ISoftParkDbContext<House> _softParkDbContext;
+            private readonly IHouseRepository _IhouseRepository;
 
-            public GetHousesHandler(ISoftParkDbContext<House> softParkDbContext)
+            public GetHousesHandler(IHouseRepository IhouseRepository)
             {
-                _softParkDbContext = softParkDbContext;
+                _IhouseRepository = IhouseRepository;
             }
 
             public async Task<IList<House>> Handle(GetHousesQuerie request, CancellationToken cancellationToken)
             {
-                var houses=await _softParkDbContext.GetAll(cancellationToken);
+                var houses=await _IhouseRepository.GetAll(cancellationToken);
                 return houses;
             }
         }

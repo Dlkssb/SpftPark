@@ -20,11 +20,11 @@ namespace Application.Customers.Commands
         public class DeleteCustomerHandler :IRequestHandler<DeleteCustomerCommand>
         {
             private readonly IMongoDatabase _database;
-            private readonly ISoftParkDbContext<Customer> _softParkDbContext;
-            public DeleteCustomerHandler(IMongoClient database, ISoftParkDbContext<Customer> softParkDbContext)
+            private readonly ICustomerREpository _IcustomerRepository;
+            public DeleteCustomerHandler(IMongoClient database, ICustomerREpository IcustomerRepository)
             {
                 _database = database.GetDatabase(Constants.GetDatabaseName());
-                _softParkDbContext = softParkDbContext;
+                _IcustomerRepository = IcustomerRepository;
             }
 
             public async Task<Unit> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
@@ -33,7 +33,7 @@ namespace Application.Customers.Commands
                 var objectId = request.Id;
                 var filter = Builders<Customer>.Filter.Eq(doc => doc.Id, objectId);
                 var customer = await collection.Find(filter).FirstOrDefaultAsync(cancellationToken);*/
-               var customer= _softParkDbContext.DeleteByIdAsync(request.Id);
+               var customer= _IcustomerRepository.DeleteByIdAsync(request.Id,cancellationToken);
 
                 if(customer !=null)
                 {

@@ -20,11 +20,11 @@ namespace Application.Customers.Commands
         public class EditCustomerHandler : IRequestHandler<EditCustomerCommand, Guid>
         {
            private readonly IMongoDatabase _database;
-            private readonly ISoftParkDbContext<Customer> _softParkDbContext;
-            public EditCustomerHandler(IMongoClient database, ISoftParkDbContext<Customer> softParkDbContext)
+            private readonly ICustomerREpository _IcustomerRepository;
+            public EditCustomerHandler(IMongoClient database, ICustomerREpository IcustomerRepository)
             {
                 _database = database.GetDatabase(Constants.GetDatabaseName());
-                _softParkDbContext = softParkDbContext;
+                _IcustomerRepository = IcustomerRepository;
             }
             public async Task<Guid> Handle(EditCustomerCommand request, CancellationToken cancellationToken)
             {
@@ -33,18 +33,18 @@ namespace Application.Customers.Commands
                 var filter= Builders<Customer>.Filter.Eq(doc => doc.Id, Id);
                 var customer=collection.Find(filter);*/
 
-                var customer = await _softParkDbContext.FindByIdAsync(request.CustomerId,cancellationToken);
+                var customer = await _IcustomerRepository.FindByIdAsync(request.CustomerId,cancellationToken);
                 if(customer!=null)
                 {
                     var NewCustomer = new Customer(
-                        request.CustomerId,
+                        
                         request.FirstName,
                         request.LastName,
                         request.PhoneNumber,
                         request.address
                         );
 
-                    var resulte=_softParkDbContext.ReplaceOneAsync(NewCustomer);
+                    var resulte= _IcustomerRepository.ReplaceOneAsync(NewCustomer,cancellationToken);
                     
                    // await collection.ReplaceOneAsync(filter, NewCustomer, new UpdateOptions { IsUpsert=true} , cancellationToken);
                     

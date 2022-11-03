@@ -11,7 +11,7 @@ namespace Application.Houses.Commands
 {
     public class CreateHouseCommand :IRequest<Guid>
     {
-        public Guid? Id { get;  set; }
+        
         public string? TypeOfOffer { get;  set; }
 
         public Address? address { get;  set; }
@@ -20,10 +20,10 @@ namespace Application.Houses.Commands
 
         public class CreateHouseHandler : IRequestHandler<CreateHouseCommand, Guid>
         {
-            private readonly ISoftParkDbContext<House> _softParkDbContext;
-            public CreateHouseHandler(ISoftParkDbContext<House> softParkDbContext)
+            private readonly IHouseRepository _IhouseRepository;
+            public CreateHouseHandler(IHouseRepository IhouseRepository)
             {
-                _softParkDbContext = softParkDbContext;
+                _IhouseRepository = IhouseRepository;
             }
 
             public async Task<Guid> Handle(CreateHouseCommand request, CancellationToken cancellationToken)
@@ -32,14 +32,14 @@ namespace Application.Houses.Commands
                 try
                 {
                     var entitiy = new House(
-                        request.Id,
+                        
                         request.TypeOfOffer,
                         request.address,
                         request.ImageUrl
 
                         );
 
-                    var id = await _softParkDbContext.InsertOneAsync(entitiy, cancellationToken);
+                    var id = await _IhouseRepository.InsertOneAsync(entitiy, cancellationToken);
 
                     return id;
                 }

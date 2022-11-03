@@ -15,16 +15,16 @@ namespace Application.Houses.Commands
 
         public class DeleteHouseHandler : IRequestHandler<DeleteHouseCommand>
         {
-            private readonly ISoftParkDbContext<House> _softParkDbContext;
+            private readonly IHouseRepository _IhouseRepository;
 
-            public DeleteHouseHandler(ISoftParkDbContext<House> softParkDbContext)
+            public DeleteHouseHandler(IHouseRepository IhouseRepository)
             {
-                _softParkDbContext = softParkDbContext;
+                _IhouseRepository = IhouseRepository;
             }
 
             public async Task<Unit> Handle(DeleteHouseCommand request, CancellationToken cancellationToken)
             {
-                var house =   _softParkDbContext.DeleteByIdAsync(request.Id,cancellationToken);
+                var house = _IhouseRepository.DeleteByIdAsync(request.Id,cancellationToken);
 
                 if (house != null)
                 {

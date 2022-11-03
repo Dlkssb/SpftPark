@@ -2,9 +2,9 @@
 
 namespace Domain.Entities
 {
-    public class Address : EntityBase
+    public class Address : Base
     {
-        public Guid Id { get; set; }
+        
 
         public string Country { get; set; } = "";
 

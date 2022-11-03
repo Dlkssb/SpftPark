@@ -4,7 +4,7 @@
 namespace Application.Interfaces
     
 {
-    public interface ISoftParkDbContext<T> where T : EntityBase
+    public interface IRepositoryBase<T> where T : Base
     {
 
      public  Task<IList<T>> GetAll(CancellationToken cancellationToken);
@@ -18,5 +18,7 @@ namespace Application.Interfaces
       public  Task DeleteByIdAsync(Guid id,CancellationToken cancellationToken);
 
         
+
+
     }
 }

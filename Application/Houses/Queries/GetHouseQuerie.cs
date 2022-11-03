@@ -11,11 +11,11 @@ namespace Application.Houses.Queries
 
         public class GetHouseHandler : IRequestHandler<GetHouseQuerie, House>
         {
-            private readonly ISoftParkDbContext<House> _softParkDbContext;
+            private readonly IHouseRepository _IhouseRepository;
 
-            public GetHouseHandler(ISoftParkDbContext<House> softParkDbContext)
+            public GetHouseHandler(IHouseRepository IhouseRepository)
             {
-                _softParkDbContext = softParkDbContext;
+                _IhouseRepository = IhouseRepository;
             }
 
             public async Task<House> Handle(GetHouseQuerie request, CancellationToken cancellationToken)
@@ -29,7 +29,7 @@ namespace Application.Houses.Queries
                     var customer = await collection.Find(filter).ToListAsync(cancellationToken);*/
 
 
-                    var customer = await _softParkDbContext.FindByIdAsync(request.Id.Value,cancellationToken);
+                    var customer = await _IhouseRepository.FindByIdAsync(request.Id.Value,cancellationToken);
 
                     return customer;
                 }

@@ -21,12 +21,12 @@ namespace Application.Customers.Queries
            
             private readonly IMongoDatabase _database;
             private readonly IMapper _mapper;
-            private readonly ISoftParkDbContext<Customer> _softParkDbContexe;
-            public GetCustomerHandler(IMongoClient database, IMapper mapper, ISoftParkDbContext<Customer> softParkDbContexe)
+            private readonly ICustomerREpository _IcustomerRepository;
+            public GetCustomerHandler(IMongoClient database, IMapper mapper, ICustomerREpository IcustomerRepository)
             {
                 _database=database.GetDatabase(Constants.GetDatabaseName());
                 _mapper=mapper;
-                _softParkDbContexe=softParkDbContexe;
+                _IcustomerRepository = IcustomerRepository;
             }
 
             public async Task<Customer> Handle(GetCustomerQuerie request, CancellationToken cancellationToken)
@@ -40,7 +40,7 @@ namespace Application.Customers.Queries
                     var customer = await collection.Find(filter).ToListAsync(cancellationToken);*/
 
 
-                    var customer = _softParkDbContexe.FindByIdAsync(request.CustomerId.Value);
+                    var customer = _IcustomerRepository.FindByIdAsync(request.CustomerId.Value,cancellationToken);
                     
                     return customer.Result;
                 }

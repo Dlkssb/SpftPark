@@ -8,15 +8,15 @@ using MongoDB.Driver;
 
 namespace Infrastructure
 {
-    public class SoftParkDbContext<T> : ISoftParkDbContext<T> where T : EntityBase
+    public class RepositoryBase<T> : IRepositoryBase<T> where T : Base
     {
         private readonly IMongoDatabase _database;
         private readonly IMongoCollection<T>  _Collection;
 
-        public SoftParkDbContext(IMongoClient database)
+        public RepositoryBase(IMongoClient database,string CollectionName)
         {
             _database = database.GetDatabase(Constants.GetDatabaseName());
-            _Collection = _database.GetCollection<T>("");
+            _Collection = _database.GetCollection<T>(CollectionName);
         }
 
         public Task DeleteByIdAsync(Guid id,CancellationToken cancellationToken)

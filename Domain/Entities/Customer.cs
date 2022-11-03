@@ -2,15 +2,15 @@
 
 namespace Domain.Entities
 {
-    public class Customer : EntityBase
+    public class Customer : Base
     {
         public Customer()
         {
             Customers = new List<Customer>();
         }
-        public Customer(Guid id, string firstName, string lastName, string phoneNumber,  Address address)
+        public Customer( string firstName, string lastName, string phoneNumber,  Address address)
         {
-            Id = id;
+            
             FirstName = firstName;
             LastName = lastName;
            
@@ -20,7 +20,7 @@ namespace Domain.Entities
            
         }
 
-        public Guid Id { get; private set; }
+        
 
         public string FirstName { get; private set; } = "";
 

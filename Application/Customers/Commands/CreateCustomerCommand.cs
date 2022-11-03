@@ -22,12 +22,12 @@ namespace Application.Customers.Commands
         public class Handler : IRequestHandler<CreateCustomerCommand,Guid>
         {
             private readonly IMongoDatabase _context;
-            private readonly ISoftParkDbContext<Customer> _softParkDbContext;
+            private readonly ICustomerREpository _IcustomerRepository;
 
-            public Handler(IMongoClient context, ISoftParkDbContext<Customer> softParkDbContext)
+            public Handler(IMongoClient context, ICustomerREpository IcustomerRepository)
             {
                 _context = context.GetDatabase(Constants.GetDatabaseName());
-                _softParkDbContext = softParkDbContext;
+                _IcustomerRepository = IcustomerRepository;
             }
             public async Task<Guid> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
             {
@@ -36,14 +36,13 @@ namespace Application.Customers.Commands
                 try
                 {
                     var entitiy = new Customer(
-                        request.Id,
                         request.FirstName,
                         request.LastName,
                         request.PhoneNumber,
                         request.address
                         );
 
-                    var id=_softParkDbContext.InsertOneAsync(entitiy,cancellationToken);
+                    var id= _IcustomerRepository.InsertOneAsync(entitiy,cancellationToken);
 
                   /*  var collection = _context.GetCollection<Customer>(Constants.CategoriesCollectionName);
 
