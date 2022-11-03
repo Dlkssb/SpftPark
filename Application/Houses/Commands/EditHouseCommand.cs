@@ -40,7 +40,7 @@ namespace Application.Houses.Commands
                         
                         );
 
-                    var resulte = await _softParkDbContext.ReplaceOneAsync(newHouse,cancellationToken);
+                    var resulte = await _IhouseRepository.ReplaceOneAsync(newHouse,cancellationToken);
 
                    
                     return resulte;
