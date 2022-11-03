@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using MongoDB.Bson;
@@ -17,19 +18,22 @@ namespace Application.Customers.Queries
         {
             
            private readonly IMongoDatabase _database;
+            private readonly IMapper _imapper;
             private readonly ISoftParkDbContext<Customer> _softParkDbContext;
 
-            public GetCustomersHandler(IMongoClient database,ISoftParkDbContext<Customer> softParkDbContext)
+            public GetCustomersHandler(IMongoClient database,ISoftParkDbContext<Customer> softParkDbContext,IMapper imapper)
             {
                 _database=database.GetDatabase(Constants.DatabaseName);
                 _softParkDbContext=softParkDbContext;
+                _imapper = imapper;
             }
             
             public async Task<IList<Customer>> Handle(GetCustomersQuerie request, CancellationToken cancellationToken)
             {
                 
-                var collection = _database.GetCollection<Customer>(Constants.CategoriesCollectionName);
-                var customers= await collection.Find(new BsonDocument()).ToListAsync(cancellationToken);
+                var collection = _database.GetCollection<Customer>(Constants.CustomerCollectionName);
+                var v= await collection.Find(new BsonDocument()).ToListAsync(cancellationToken);
+                var customers=_imapper.Map<IList<Customer>>(v);
                 try
                 {
                     return customers;
