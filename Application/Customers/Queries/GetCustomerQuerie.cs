@@ -19,13 +19,12 @@ namespace Application.Customers.Queries
         public class GetCustomerHandler : IRequestHandler<GetCustomerQuerie, Customer>
         {
            
-            private readonly IMongoDatabase _database;
-            private readonly IMapper _mapper;
+           
+            
             private readonly ICustomerREpository _IcustomerRepository;
-            public GetCustomerHandler(IMongoClient database, IMapper mapper, ICustomerREpository IcustomerRepository)
+            public GetCustomerHandler( ICustomerREpository IcustomerRepository)
             {
-                _database=database.GetDatabase(Constants.GetDatabaseName());
-                _mapper=mapper;
+               
                 _IcustomerRepository = IcustomerRepository;
             }
 

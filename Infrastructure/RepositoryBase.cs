@@ -15,7 +15,7 @@ namespace Infrastructure
 
         public RepositoryBase(IMongoClient database,string CollectionName)
         {
-            _database = database.GetDatabase(Constants.GetDatabaseName());
+            _database = database.GetDatabase(Constants.DatabaseName);
             _Collection = _database.GetCollection<T>(CollectionName);
         }
 

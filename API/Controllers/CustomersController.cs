@@ -1,15 +1,12 @@
 ﻿using Application.Customers.Commands;
 using Application.Customers.Queries;
-using Application.Houses.Commands;
-using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class CustomersController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -19,33 +16,34 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<List<Customer>> GetCustomers([FromQuery] GetCustomersQuerie query)
+        [HttpGet("~/GetCustomers")]
+        public async Task<ActionResult> GetCustomers([FromQuery] GetCustomersQuerie query)
         {
-            return await _mediator.Send(query);
+            return Ok(await _mediator.Send(query));
         }
 
-        [HttpGet]
-        public async Task<Customer> GetCustomer([FromQuery] GetCustomerQuerie query)
+        [HttpGet("~/GetCustomer")]
+        public async Task<ActionResult> GetCustomer([FromQuery] GetCustomerQuerie query)
         {
-            return await _mediator.Send(query);
+            return Ok(await _mediator.Send(query));
         }
 
-        [HttpPost]
-        public async Task<Guid> AddCustomer([FromBody] CreateCustomerCommand command)
+        [HttpPost("~/AddCustomer")]
+        public async Task<ActionResult> AddCustomer([FromBody] CreateCustomerCommand command)
         {
-            return await _mediator.Send(command);
+            return Ok(await _mediator.Send(command));
         }
 
-        public async Task<Guid> EditCustomer([FromBody] EditCustomerCommand command)
+        [HttpPut("~/EditCustomer")]
+        public async Task<ActionResult> EditCustomer([FromBody] EditCustomerCommand command)
         {
-            return await _mediator.Send(command);
+            return Ok(await _mediator.Send(command));
         }
 
-        [HttpPost]
-        public async Task DeleteCustomer(DeleteCustomerCommand command)
+        [HttpDelete("~/DeleteCustomer")]
+        public async Task<ActionResult> DeleteCustomer([FromBody] DeleteCustomerCommand command)
         {
-            await _mediator.Send(command);
+           return Ok( await _mediator.Send(command));
         }
     }
 }

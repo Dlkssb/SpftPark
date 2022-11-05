@@ -1,15 +1,14 @@
 ﻿using Application.Customers.Queries;
 using Application.Houses.Commands;
 using Application.Houses.Queries;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class HousesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -19,34 +18,34 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<List<House>> GetCustomers([FromQuery] GetHousesQuerie query)
+        [HttpGet("~/GetHouses")]
+        public async Task<ActionResult> GetHouses([FromQuery] GetHousesQuerie query)
         {
-            return await _mediator.Send(query);
+            return Ok(await _mediator.Send(query));
         }
 
-        [HttpGet]
-        public async Task<House> GetCustomers([FromQuery] GetHouseQuerie query)
+        [HttpGet("~/GetHouse")]
+        public async Task<ActionResult> GetHouse([FromQuery] GetHouseQuerie query)
         {
-            return await _mediator.Send(query);
+            return Ok(await _mediator.Send(query));
         }
 
-        [HttpPost]
-        public async Task<Guid> CreateHouse(CreateHouseCommand command)
+        [HttpPost("~/CreateHouse")]
+        public async Task<ActionResult> CreateHouse([FromBody] CreateHouseCommand command)
         {
-            return await _mediator.Send(command);
+            return Ok(await _mediator.Send(command));
         }
 
-        [HttpPost]
-        public async Task<Guid> EditHouse(EditHouseCommand command)
+        [HttpPut("EditHouse")]
+        public async Task<ActionResult> EditHouse([FromBody] EditHouseCommand command)
         {
-            return await _mediator.Send(command);
+            return Ok(await _mediator.Send(command));
         }
 
-        [HttpPost]
-        public async Task DeleteHouse(DeleteHouseCommand command)
+        [HttpDelete("DeleteHouse")]
+        public async Task<ActionResult> DeleteHouse([FromBody] DeleteHouseCommand command)
         {
-             await _mediator.Send(command);
+            return Ok(await _mediator.Send(command));
         }
     }
 }

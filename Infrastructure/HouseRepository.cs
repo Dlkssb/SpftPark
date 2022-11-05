@@ -13,9 +13,12 @@ namespace Infrastructure
 {
     public class HouseRepository : RepositoryBase<House>, IHouseRepository
     {
-        public HouseRepository(IMongoClient database, string CollectionName) : base(database, CollectionName)
+      public static  string _Collection="Houses";
+        public HouseRepository(IMongoClient database) : base(database, _Collection)
         {
-            CollectionName = GetCollectionName();
+
+            
+            
         }
 
         public string GetCollectionName()

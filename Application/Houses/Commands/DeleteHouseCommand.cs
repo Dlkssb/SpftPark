@@ -24,7 +24,7 @@ namespace Application.Houses.Commands
 
             public async Task<Unit> Handle(DeleteHouseCommand request, CancellationToken cancellationToken)
             {
-                var house = _IhouseRepository.DeleteByIdAsync(request.Id,cancellationToken);
+                var house =  _IhouseRepository.DeleteByIdAsync(request.Id,cancellationToken);
 
                 if (house != null)
                 {

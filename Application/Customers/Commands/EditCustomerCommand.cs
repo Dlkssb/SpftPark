@@ -1,8 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using MediatR;
-using MongoDB.Driver;
-
 namespace Application.Customers.Commands
 {
     public class EditCustomerCommand :IRequest<Guid>
@@ -19,37 +17,27 @@ namespace Application.Customers.Commands
 
         public class EditCustomerHandler : IRequestHandler<EditCustomerCommand, Guid>
         {
-           private readonly IMongoDatabase _database;
             private readonly ICustomerREpository _IcustomerRepository;
-            public EditCustomerHandler(IMongoClient database, ICustomerREpository IcustomerRepository)
+            public EditCustomerHandler( ICustomerREpository IcustomerRepository)
             {
-                _database = database.GetDatabase(Constants.GetDatabaseName());
                 _IcustomerRepository = IcustomerRepository;
             }
             public async Task<Guid> Handle(EditCustomerCommand request, CancellationToken cancellationToken)
             {
-                /*Guid Id=request.CustomerId;
-                var collection = _database.GetCollection<Customer>(Constants.CategoriesCollectionName);
-                var filter= Builders<Customer>.Filter.Eq(doc => doc.Id, Id);
-                var customer=collection.Find(filter);*/
-
                 var customer = await _IcustomerRepository.FindByIdAsync(request.CustomerId,cancellationToken);
                 if(customer!=null)
                 {
-                    var NewCustomer = new Customer(
-                        
+                    customer.EditCustomer
+                        (
                         request.FirstName,
                         request.LastName,
                         request.PhoneNumber,
                         request.address
                         );
-
-                    var resulte= _IcustomerRepository.ReplaceOneAsync(NewCustomer,cancellationToken);
                     
-                   // await collection.ReplaceOneAsync(filter, NewCustomer, new UpdateOptions { IsUpsert=true} , cancellationToken);
                     
+                    var resulte= _IcustomerRepository.ReplaceOneAsync(customer, cancellationToken);
                     return resulte.Result;
-
                 }
                 else
                 {

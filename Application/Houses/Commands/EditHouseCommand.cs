@@ -28,19 +28,20 @@ namespace Application.Houses.Commands
 
             public async Task<Guid> Handle(EditHouseCommand request, CancellationToken cancellationToken)
             {
-                var house = _IhouseRepository.FindByIdAsync(request.Id, cancellationToken);
+                var house = await _IhouseRepository.FindByIdAsync(request.Id, cancellationToken);
 
                 if (house != null)
                 {
-                    var newHouse = new House(
-                        
+                   house.EditHouse(
+
                         request.TypeOfOffer,
-                        request.address,
-                        request.ImageUri
+                        request.ImageUri,
+                        request.address
                         
+
                         );
 
-                    var resulte = await _IhouseRepository.ReplaceOneAsync(newHouse,cancellationToken);
+                    var resulte = await _IhouseRepository.ReplaceOneAsync(house, cancellationToken);
 
                    
                     return resulte;

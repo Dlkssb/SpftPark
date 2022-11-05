@@ -8,7 +8,7 @@ namespace Application
 {
     public class Constants
     {
-        public const string DatabaseName = "SoftPark";
+        public const string DatabaseName = "Soft_Park";
         public const string ConnectionString = "mongodb://localhost:27017";
 
         public static string GetDatabaseName()

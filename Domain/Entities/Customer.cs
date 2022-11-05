@@ -6,8 +6,9 @@ namespace Domain.Entities
     {
         public Customer()
         {
-            Customers = new List<Customer>();
+
         }
+       
         public Customer( string firstName, string lastName, string phoneNumber,  Address address)
         {
             
@@ -20,21 +21,30 @@ namespace Domain.Entities
            
         }
 
+      
+        public void EditCustomer(string firstName, string lastName, string phoneNumber, Address address)
+        {
+            
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.PhoneNumber = phoneNumber;
+            this.address = address;
+
+
+
+        }
+
         
 
         public string FirstName { get; private set; } = "";
 
         public string LastName { get; private set; } = "";
 
-       
-
         public string PhoneNumber { get; private set; } = "";
 
+        public Address? address { get; private set; }
         
-
-        public Address address { get; private set; }
-        
-        public IList<Customer> Customers{ get; private set; }
+       
     }
   
 

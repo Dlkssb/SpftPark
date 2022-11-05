@@ -2,10 +2,10 @@
 
 namespace Domain.Entities
 {
-    public class Address : Base
+    public class Address 
     {
         
-
+        
         public string Country { get; set; } = "";
 
         public string State { get; set; } = "";
@@ -16,6 +16,6 @@ namespace Domain.Entities
 
         public string Street2 { get; set; } = "";
 
-        public Guid CustomerId { get; set; }
+        
     }
 }

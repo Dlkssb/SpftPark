@@ -9,7 +9,7 @@ namespace Application.Customers.Commands
     public class CreateCustomerCommand : IRequest<Guid>
     {
        
-        public Guid Id { get; set; }
+        
 
         public string? FirstName { get; set; } 
 
@@ -21,12 +21,12 @@ namespace Application.Customers.Commands
 
         public class Handler : IRequestHandler<CreateCustomerCommand,Guid>
         {
-            private readonly IMongoDatabase _context;
+            
             private readonly ICustomerREpository _IcustomerRepository;
 
-            public Handler(IMongoClient context, ICustomerREpository IcustomerRepository)
+            public Handler( ICustomerREpository IcustomerRepository)
             {
-                _context = context.GetDatabase(Constants.GetDatabaseName());
+                
                 _IcustomerRepository = IcustomerRepository;
             }
             public async Task<Guid> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
@@ -48,7 +48,7 @@ namespace Application.Customers.Commands
 
                     await collection.InsertOneAsync(entitiy, null, cancellationToken);*/
                     
-                    return request.Id;
+                    return id.Result;
                 }
                 catch (Exception ex) {
                     throw new Exception(ex.Message);

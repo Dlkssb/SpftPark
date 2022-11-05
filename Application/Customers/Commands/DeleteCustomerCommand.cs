@@ -19,11 +19,11 @@ namespace Application.Customers.Commands
 
         public class DeleteCustomerHandler :IRequestHandler<DeleteCustomerCommand>
         {
-            private readonly IMongoDatabase _database;
+           
             private readonly ICustomerREpository _IcustomerRepository;
-            public DeleteCustomerHandler(IMongoClient database, ICustomerREpository IcustomerRepository)
+            public DeleteCustomerHandler( ICustomerREpository IcustomerRepository)
             {
-                _database = database.GetDatabase(Constants.GetDatabaseName());
+                
                 _IcustomerRepository = IcustomerRepository;
             }
 

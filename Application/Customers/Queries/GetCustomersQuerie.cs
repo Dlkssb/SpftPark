@@ -16,34 +16,20 @@ namespace Application.Customers.Queries
     {
         public class GetCustomersHandler : IRequestHandler<GetCustomersQuerie, IList<Customer>>
         {
-            
-           private readonly IMongoDatabase _database;
-            private readonly IMapper _imapper;
-            private readonly IRepositoryBase<Customer> _softParkDbContext;
 
-            public GetCustomersHandler(IMongoClient database,IRepositoryBase<Customer> softParkDbContext,IMapper imapper)
+            private readonly ICustomerREpository _IcustomerRepository;
+
+            public GetCustomersHandler( ICustomerREpository IcustomerRepository)
             {
-                _database=database.GetDatabase(Constants.DatabaseName);
-                _softParkDbContext=softParkDbContext;
-                _imapper = imapper;
+                
+                _IcustomerRepository = IcustomerRepository;
+                
             }
             
             public async Task<IList<Customer>> Handle(GetCustomersQuerie request, CancellationToken cancellationToken)
             {
-                
-                var collection = _database.GetCollection<Customer>(Constants.CustomerCollectionName);
-                var v= await collection.Find(new BsonDocument()).ToListAsync(cancellationToken);
-                var customers=_imapper.Map<IList<Customer>>(v);
-                try
-                {
+                    var customers =await _IcustomerRepository.GetAll(cancellationToken);
                     return customers;
-                }
-
-                catch(Exception e)
-                {
-                    throw new Exception(e.Message);
-                }
-                
             }
         }
     }

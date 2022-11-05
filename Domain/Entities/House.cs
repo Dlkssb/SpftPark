@@ -16,7 +16,19 @@ namespace Domain.Entities
             ImageUri = imageUri;
         }
 
-        
+        public void EditHouse(string TypeOfOffer, string ImageUri, Address address)
+        {
+
+            
+            this.address = address;
+            this.address = address;
+            this.ImageUri = ImageUri;
+            
+
+
+
+        }
+
         public  string? TypeOfOffer { get; private set; }
         
         public Address? address { get; private set; }
