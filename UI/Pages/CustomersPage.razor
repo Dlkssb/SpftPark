@@ -1,0 +1,53 @@
+﻿@page "/Customers"
+@using System.Net.Http
+@inject UI.Interfaces.ICustomerServices _ICustomerServices
+@using UI.Models
+
+
+<PageTitle>Counter</PageTitle>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>phone number</th>
+        <th>Address</th>
+         <th>Actions</th>
+        
+    </tr>
+    </thead>
+    <tbody>
+        @foreach(Customer C in Customers)
+        {
+            <tr>
+            <td>@C.FirstName</td>
+            <td>@C.LastName</td>
+            <td>@C.PhoneNumber</td>
+            <td>@C.address.Country</td>
+            <td> <div>
+                        <a href=@($"EditCustomer/{C.Id}") class="btn btn-primary">Edit</a>
+                        <a href="#" class="btn btn-primary">View</a>
+                        <a href="@($"DeleteCustomer/{C.Id}")" class="btn btn-danger">Delete</a>
+                    </div>
+            </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="CreateCustomer" class="btn btn-primary">Create Customer</a>
+
+
+
+
+@code {
+
+    private List<Customer> Customers;
+
+
+    protected override async Task OnInitializedAsync() {
+       Customers= await _ICustomerServices.GetAllAsync();
+    }
+
+}

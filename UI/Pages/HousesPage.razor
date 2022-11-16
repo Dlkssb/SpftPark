@@ -1,0 +1,58 @@
+﻿@page "/Houses"
+@using UI.Models
+@inject UI.Interfaces.IHouseServices _IHousesServices
+
+<PageTitle>Houses</PageTitle>
+
+<h1>Houses</h1>
+
+
+
+@if (Houses == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>TypeOfOffer</th>
+                <th>Address</th>
+                <th>Image</th>
+                <th>Actions</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var H in Houses)
+            {
+                <tr>
+                    <td>@H.TypeOfOffer</td>
+                    <td>@H.address</td>
+                    <td><img src="@H.ImageUri"></td>
+                    
+                    <td>
+                        <div>
+                            <a href="#" class="btn btn-primary">Edit</a>
+                            <a href="#" class="btn btn-primary">View</a>
+                            <a href="#" class="btn btn-danger">Delete</a>
+                        </div>
+                    </td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<House>? Houses;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Houses = await _IHousesServices.GetAllAsync();
+    }
+
+    
+}

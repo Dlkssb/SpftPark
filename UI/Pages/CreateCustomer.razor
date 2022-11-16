@@ -1,0 +1,77 @@
+﻿@page "/CreateCustomer"
+@using UI.Interfaces
+@using UI.Models
+@inject ICustomerServices _ICustomerServices
+
+
+<EditForm Model="@customer" OnValidSubmit="@submit">
+    <h3>Create Customer</h3>
+    <hr />
+    <div class="form-group row">
+        <label for="firstname" class="col-sm-2 col-form-label">Frist Name</label>
+        <div class="col-sm-10 mt-2">
+            <InputText id="firstName" class="form-control" placeholder="First Name" @bind-Value="customer.FirstName">
+            </InputText>
+        </div>
+
+        <label for="lastname" class="col-sm-2 col-form-label">Last Name</label>
+        <div class="col-sm-10 mt-2">
+            <InputText id="lastName" class="form-control" placeholder="Last Name" @bind-Value="customer.LastName">
+            </InputText>
+        </div>
+
+        <label for="phoneNumber" class="col-sm-2 col-form-label">Phone Number</label>
+        <div class="col-sm-10 mt-2">
+            <InputText id="phoneNumber" class="form-control" placeholder="Phone Number" @bind-Value="customer.PhoneNumber">
+            </InputText>
+        </div>
+
+
+        <label for="Adress" class="col-sm-2 col-form-label">Addrss</label>
+        <div class="col-sm-10 mt-2" id="Adress">
+        <div class="col-sm-10 mt-1">
+            <InputText id="Country" class="form-control" placeholder="Country" @bind-Value="customer.address.Country">
+            </InputText>
+        </div>
+
+        <div class="col-sm-10 mt-1">
+            <InputText id="City" class="form-control" placeholder="City" @bind-Value="customer.address.City">
+            </InputText>
+        </div>
+
+        <div class="col-sm-10 mt-1">
+            <InputText id="State" class="form-control" placeholder="State" @bind-Value="customer.address.State">
+            </InputText>
+        </div>
+
+        <div class="col-sm-10 mt-1">
+            <InputText id="Street1" class="form-control" placeholder="Street 1" @bind-Value="customer.address.Street1">
+            </InputText>
+        </div>
+
+        <div class="col-sm-10 mt-1">
+            <InputText id="Street2" class="form-control" placeholder="Street 2" @bind-Value="customer.address.Street2">
+            </InputText>
+        </div>
+        </div>
+
+    </div>
+    <div class="col-sm-10 mt-1">
+    <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+</EditForm>
+
+@code {
+    public Customer customer=new Customer();
+
+    
+    private async Task<Guid> submit()
+    {
+       return await _ICustomerServices.Create(customer);
+
+
+    }
+
+
+
+}
